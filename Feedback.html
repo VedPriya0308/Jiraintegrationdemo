@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<body>
+
+<div ng-app="myApp" ng-controller="formCtrl">
+<div class="col-sm-8 col-sm-offset-2">
+    <div class="page-header"><h1>Feedback Page</h1></div>
+<!---- FORM ------>
+<form data-ng-submit>
+
+<p><label>Name: </label><input type="text" data-ng-model="name"></p>
+<p><label>Email : </label><input type="text" data-ng-model="email"></p>
+<p><label>Feedback Topic : </label><input type="text" data-ng-model="feedback_topic"></p>
+<p><label>Description : </label><input type="text" data-ng-model="description"></p>
+
+<button ng-click="submit()">Submit</button>
+
+</form>
+<br/><div>{{Status}}</div>
+</div>
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('formCtrl', function($scope,$http) {
+      
+      $scope.submit = function() {
+        jiradata={
+            "CreatorName": $scope.name,
+            "CreatorEmail": $scope.email,
+            "Description": $scope.description,
+            "Summary": $scope.feedback_topic
+        }
+        $http({method: 'POST', url:'https://dev.apigeexproto.com/jirademoproxy', data: jiradata})
+        .then(function(response){
+            //your code in case the post succeeds
+            console.log(response);
+            $scope.Status=response.status;
+        })
+        .catch(function(err){
+            //your code in case your post fails
+            console.log(err);
+        });
+        };
+    });
+    </script>
+</body>
+</html>
